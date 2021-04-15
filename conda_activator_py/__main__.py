@@ -7,18 +7,8 @@ from enum import Enum
 
 import typer
 from conda_activator_py import __version__
-from conda_activator_py.example import hello
+from conda_activator_py.example import activate_conda
 from rich.console import Console
-
-
-class Color(str, Enum):
-    white = "white"
-    red = "red"
-    cyan = "cyan"
-    magenta = "magenta"
-    yellow = "yellow"
-    green = "green"
-
 
 app = typer.Typer(
     name="conda-activator-py",
@@ -37,16 +27,14 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-@app.command(name="")
+@app.command()
 def main(
-    name: str = typer.Option(..., help="Name of person to greet."),
-    color: Optional[Color] = typer.Option(
+    conda: Optional[str] = typer.Option(
         None,
         "-c",
-        "--color",
-        "--colour",
+        "--conda",
         case_sensitive=False,
-        help="Color for name. If not specified then choice will be random.",
+        help=".conda_ac file",
     ),
     version: bool = typer.Option(
         None,
@@ -58,9 +46,7 @@ def main(
     ),
 ):
     """Prints a greeting for a giving name."""
-    if color is None:
-        # If no color specified use random value from `Color` class
-        color = random.choice(list(Color.__members__.values()))
+    if conda:
+        pass
 
-    greeting: str = hello(name)
-    console.print(f"[bold {color}]{greeting}[/]")
+    activate_conda()
